@@ -1,0 +1,145 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}首页 - 我的博客{% endblock %}
+
+{% block content %}
+<!-- 全屏背景区域 -->
+<section class="hero-section">
+    <div class="hero-background">
+        <!-- 背景图片，可以通过CSS自定义 -->
+    </div>
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1 class="hero-title">「坏心思的神明，给我带来了禮物」</h1>
+        </div>
+    </div>
+</section>
+
+<!-- 博主信息卡片 -->
+{% if blogger %}
+<section class="blogger-section">
+    <div class="container">
+        <div class="blogger-card">
+            <div class="blogger-avatar">
+                {% if blogger.avatar %}
+                    <img src="{{ blogger.avatar.url }}" alt="{{ blogger.nickname }}">
+                {% else %}
+                    <div class="avatar-placeholder">
+                        <i class="fas fa-user"></i>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="blogger-info">
+                <h2 class="blogger-name">{{ blogger.nickname }}</h2>
+                <div class="blogger-level">{{ blogger.level }}</div>
+                <div class="blogger-stats">
+                    <span class="stat-item">
+                        <i class="fas fa-file-alt"></i>
+                        {{ articles.paginator.count }} 篇文章
+                    </span>
+                    <span class="stat-item">
+                        <i class="fas fa-tags"></i>
+                        {{ tags.count }} 个标签
+                    </span>
+                    <span class="stat-item">
+                        <i class="fas fa-folder"></i>
+                        {{ categories.count }} 个分类
+                    </span>
+                </div>
+                {% if blogger.bio %}
+                    <p class="blogger-bio">{{ blogger.bio }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- 文章列表 -->
+<section class="articles-section" id="main-content">
+    <div class="container">
+        <h2 class="section-title">最新文章</h2>
+        <div class="articles-grid">
+            {% for article in articles %}
+            <article class="article-card">
+                {% if article.cover %}
+                    <div class="article-cover">
+                        <img src="{{ article.cover.url }}" alt="{{ article.title }}">
+                    </div>
+                {% endif %}
+                <div class="article-content">
+                    <div class="article-meta">
+                        <span class="article-date">
+                            <i class="far fa-calendar-alt"></i>
+                            {{ article.created_at|date:"Y-m-d" }}
+                        </span>
+                        {% if article.category %}
+                            <span class="article-category">
+                                <i class="fas fa-folder"></i>
+                                {{ article.category.name }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    <h3 class="article-title">
+                        <a href="{% url 'blog:article_detail' article.id %}">{{ article.title }}</a>
+                    </h3>
+                    <p class="article-summary">
+                        {% if article.summary %}
+                            {{ article.summary }}
+                        {% else %}
+                            {{ article.body|truncatewords:30 }}
+                        {% endif %}
+                    </p>
+                    {% if article.tags.all %}
+                        <div class="article-tags">
+                            {% for tag in article.tags.all %}
+                                <span class="tag">
+                                    <i class="fas fa-tag"></i>
+                                    {{ tag.name }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="article-actions">
+                        <a href="{% url 'blog:article_detail' article.id %}" class="read-more-btn">
+                            阅读全文
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <div class="no-articles">
+                <i class="fas fa-inbox"></i>
+                <p>暂无文章</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- 分页 -->
+        {% if articles.has_other_pages %}
+        <div class="pagination">
+            {% if articles.has_previous %}
+                <a href="?page={{ articles.previous_page_number }}" class="page-link">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            {% endif %}
+            
+            {% for num in articles.paginator.page_range %}
+                {% if articles.number == num %}
+                    <span class="page-link active">{{ num }}</span>
+                {% elif num > articles.number|add:'-3' and num < articles.number|add:'3' %}
+                    <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if articles.has_next %}
+                <a href="?page={{ articles.next_page_number }}" class="page-link">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %} 

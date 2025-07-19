@@ -1,0 +1,65 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}关于 - 我的博客{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <div class="container">
+        <div class="glass-bg">
+            <div class="about-content">
+                {% if blogger %}
+                    <div class="about-header">
+                        <div class="about-avatar">
+                            {% if blogger.avatar %}
+                                <img src="{{ blogger.avatar.url }}" alt="{{ blogger.nickname }}">
+                            {% else %}
+                                <div class="avatar-placeholder">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="about-info">
+                            <h1 class="about-name">{{ blogger.nickname }}</h1>
+                            <div class="about-level">{{ blogger.level }}</div>
+                        </div>
+                    </div>
+                    
+                    {% if blogger.bio %}
+                        <div class="about-bio">
+                            <h2>关于我</h2>
+                            <p>{{ blogger.bio }}</p>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="about-placeholder">
+                        <i class="fas fa-user-circle"></i>
+                        <h1>关于我</h1>
+                        <p>博主信息正在完善中...</p>
+                    </div>
+                {% endif %}
+                
+                <div class="about-stats">
+                    <h2>博客统计</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-file-alt"></i>
+                            <div class="stat-number">{{ articles.paginator.count|default:0 }}</div>
+                            <div class="stat-label">文章</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-tags"></i>
+                            <div class="stat-number">{{ tags.count|default:0 }}</div>
+                            <div class="stat-label">标签</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-folder"></i>
+                            <div class="stat-number">{{ categories.count|default:0 }}</div>
+                            <div class="stat-label">分类</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

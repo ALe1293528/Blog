@@ -1,0 +1,63 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load markdown_extras %}
+
+{% block title %}{{ article.title }} - 我的博客{% endblock %}
+
+{% block content %}
+<div class="article-detail-container">
+    <div class="container">
+        <div class="glass-bg">
+            <!-- 文章头部 -->
+            <header class="article-header">
+                <div class="article-meta">
+                    <span class="article-date">
+                        <i class="far fa-calendar-alt"></i>
+                        {{ article.created_at|date:"Y年m月d日" }}
+                    </span>
+                    {% if article.category %}
+                        <span class="article-category">
+                            <i class="fas fa-folder"></i>
+                            <a href="{% url 'blog:category_articles' article.category.id %}">{{ article.category.name }}</a>
+                        </span>
+                    {% endif %}
+                </div>
+                <h1 class="article-title">{{ article.title }}</h1>
+                {% if article.tags.all %}
+                    <div class="article-tags">
+                        {% for tag in article.tags.all %}
+                            <span class="tag">
+                                <i class="fas fa-tag"></i>
+                                <a href="{% url 'blog:tag_articles' tag.id %}">{{ tag.name }}</a>
+                            </span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </header>
+
+            <!-- 文章内容 -->
+            <article class="article-content">
+                {% if article.cover %}
+                    <div class="article-cover">
+                        <img src="{{ article.cover.url }}" alt="{{ article.title }}">
+                    </div>
+                {% endif %}
+                
+                <div class="article-body">
+                    {{ article.body|markdown }}
+                </div>
+            </article>
+
+            <!-- 文章底部 -->
+            <footer class="article-footer">
+                <div class="article-navigation">
+                    <a href="{% url 'blog:index' %}" class="back-to-home">
+                        <i class="fas fa-home"></i>
+                        返回首页
+                    </a>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,9 @@
+# Django博客项目依赖包
+# 建议使用国内镜像源安装：
+# pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
+
+Django>=5.2.3
+markdown>=3.8.2
+Pygments>=2.19.1
+Pillow>=10.0.0
+gunicorn>=21.2.0 

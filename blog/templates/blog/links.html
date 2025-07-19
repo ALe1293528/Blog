@@ -1,0 +1,89 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}友链 - 我的博客{% endblock %}
+
+{% block content %}
+<div class="links-container">
+    <div class="container">
+        <div class="glass-bg">
+            <div class="links-content">
+                <h1 class="links-title">友情链接</h1>
+                <p class="links-description">这里是一些我喜欢的博客和网站</p>
+                
+                <div class="links-grid">
+                    {% if links %}
+                        {% for link in links %}
+                        <div class="link-card">
+                            <div class="link-avatar">
+                                {% if link.avatar %}
+                                    <img src="{{ link.avatar.url }}" alt="{{ link.name }}">
+                                {% else %}
+                                    <i class="fas fa-globe"></i>
+                                {% endif %}
+                            </div>
+                            <div class="link-info">
+                                <h3 class="link-name">{{ link.name }}</h3>
+                                {% if link.description %}
+                                    <p class="link-description">{{ link.description }}</p>
+                                {% endif %}
+                                <a href="{{ link.url }}" class="link-url" target="_blank" rel="noopener">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    访问网站
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <!-- 当没有友链时显示的默认内容 -->
+                        <div class="link-card">
+                            <div class="link-avatar">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="link-info">
+                                <h3 class="link-name">示例博客</h3>
+                                <p class="link-description">这是一个示例友链，你可以在后台管理中修改</p>
+                                <a href="#" class="link-url" target="_blank" rel="noopener">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    访问网站
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="link-card">
+                            <div class="link-avatar">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="link-info">
+                                <h3 class="link-name">技术博客</h3>
+                                <p class="link-description">分享技术文章和开发经验</p>
+                                <a href="#" class="link-url" target="_blank" rel="noopener">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    访问网站
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="link-card">
+                            <div class="link-avatar">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div class="link-info">
+                                <h3 class="link-name">设计博客</h3>
+                                <p class="link-description">关于设计和创意的分享</p>
+                                <a href="#" class="link-url" target="_blank" rel="noopener">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    访问网站
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="links-footer">
+                    <p>想要交换友链？欢迎联系我！</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
